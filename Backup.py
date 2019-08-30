@@ -59,7 +59,7 @@ def timer(start_time):
 
 # 备份指令
 def backup_cmd_execute(exe_path, exclude_list_path, remote_ip, remote_user, backup_source, backup_dest, log_path, log_name):
-    cmd = exe_path + " " + backup_source + " " + remote_user + "@" + remote_ip + ":" + backup_dest + " " + exclude_list_path + ">> " + log_path + log_name + "2>&1"
+    cmd = exe_path + " " + backup_source + " " + remote_user + "@" + remote_ip + ":" + backup_dest + " " + exclude_list_path + ">> " + log_path + log_name + " 2>&1"
     cmd_exe(cmd)
 
 def recovery():

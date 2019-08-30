@@ -14,19 +14,68 @@
 
 ## 设定方式
 
-复制备份脚本Rsync_tmbackup.sh到本地
+1. 复制专案到本地
 
-赋予执行权限
+`git clone https://github.com/Johnny-Kao/Time-Machine-Mac-Backup.git`
 
-设定远端与服务端免密登录
+2. 复制备份脚本Rsync_tmbackup.sh到本地
 
-设定排除备份清单
+`cp Time-Machine-Mac-Backup/rsync_tmbackup.sh /usr/local/bin/rsync_tmbackup.sh`
 
-设定基本参数
+3. 赋予执行权限
+
+`chmod +x /usr/local/bin/rsync_tmbackup.sh`
+
+4. 设定远端与服务端免密登录
+
+[Linux SSH免密登录](https://www.jb51.net/article/163093.htm)
+
+5. 设定排除备份清单 - 参考项目中档案Exclude.txt格式
+
+设定基本参数 - 修改Backup.py
+
+```
+# Log路径/名称
+log_path = 'YOUR PATH HERE'
+
+# WIFI白名单 - 判定是否为指定局域网
+wifi_list = ['YOUR WIFI SSID HERE', 'YOUR WIFI SSID HERE', 'YOUR WIFI SSID HERE']
+
+# 备份主程序路径/不备份路径（排除清单）
+exe_path = '/usr/local/bin/rsync_tmbackup.sh'
+exclude_list_path = 'YOUR EXCLUDE TXT FILE HERE'
+
+# 远端服务器ip/远端服务器使用者（需要设定远端免密登录）
+only_sync_in_local = "F" # 是否强制局域网更新？ T/F
+remote_ip_internal = 'INTERNAL IP - EX. 192.168.0.1' # 局域网IP
+remote_ip_external = 'EXTERNAL IP - EX. 143.10.10.10' # 公网IP
+remote_user = 'YOUR NAS REMOTE SERVER NAME'
+
+# 备份路径[本地，远端]
+backup_path = [
+    ['LOCAL SOURCE, EX. ~/Downloads','REMOTE DEST, EX. /volume3/NAS/MacAirBackup/Downloads/'],
+    ['LOCAL SOURCE, EX. ~/Downloads','REMOTE DEST, EX. /volume3/NAS/MacAirBackup/Downloads/']
+]
+```
 
 首次执行
 
+`python3 Backup.py`
+
+首次运行请先参考log档案
+
+```
+# 你会发现log中含有下列的指令，如果你有10个备份路径，log中就会有10个指令。请依照您的设定，依序在本机执行。
+
+ssh -p 22 远端服务器账户@远端服务器IP 'mkdir -p -- "/volume3/NAS/MacAirBackup/Downloads" ; touch "/volume3/NAS/MacAirBackup/Downloads/backup.marker"'
+
+```
+
 添加定期备份功能
+
+`crontab -e`
+
+
 
 ## 待开发清单
 
